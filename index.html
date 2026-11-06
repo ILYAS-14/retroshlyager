@@ -1,0 +1,1158 @@
+﻿<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Ретро-шлягер — музыка, которую выбирают</title>
+
+    <style>
+        :root {
+            --bg: #f5f1e8;
+            --card: #fffdf8;
+            --ink: #29271f;
+            --muted: #777267;
+            --red: #9d4435;
+            --red-dark: #7c3228;
+            --gold: #d4ad69;
+            --green: #344d40;
+            --line: #e9e1d4;
+            --shadow: 0 18px 45px rgba(48, 38, 26, .09);
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            scroll-padding-top: 90px;
+        }
+
+        body {
+            margin: 0;
+            background: var(--bg);
+            color: var(--ink);
+            font-family: "Segoe UI", Arial, sans-serif;
+            line-height: 1.6;
+        }
+
+        button, input, select {
+            font: inherit;
+        }
+
+        button {
+            cursor: pointer;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        .header {
+            position: sticky;
+            z-index: 10;
+            top: 0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 25px;
+            padding: 14px max(5vw, 22px);
+            border-bottom: 1px solid var(--line);
+            background: rgba(255, 253, 248, .96);
+            backdrop-filter: blur(12px);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 20px;
+            font-weight: 800;
+            white-space: nowrap;
+        }
+
+        .logo-icon {
+            display: grid;
+            width: 40px;
+            height: 40px;
+            place-items: center;
+            border-radius: 50%;
+            background: var(--red);
+            color: white;
+            font-size: 22px;
+        }
+
+        .nav {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+        }
+
+            .nav a {
+                padding: 9px 12px;
+                border-radius: 5px;
+                color: var(--muted);
+                font-size: 14px;
+                transition: .2s;
+            }
+
+                .nav a:hover {
+                    background: #f2e9db;
+                    color: var(--red);
+                }
+
+        .hero {
+            position: relative;
+            display: flex;
+            min-height: 490px;
+            align-items: center;
+            justify-content: space-between;
+            gap: 35px;
+            overflow: hidden;
+            padding: 65px 9vw;
+            background: radial-gradient(circle at 78% 45%, rgba(212,173,105,.20), transparent 240px), var(--green);
+            color: #fffdf8;
+        }
+
+        .hero-copy {
+            position: relative;
+            z-index: 1;
+            max-width: 660px;
+        }
+
+        .eyebrow {
+            margin: 0 0 12px;
+            color: var(--red);
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: .16em;
+            text-transform: uppercase;
+        }
+
+        .hero .eyebrow {
+            color: #e6c77f;
+        }
+
+        h1, h2, h3 {
+            margin-top: 0;
+            font-family: Georgia, "Times New Roman", serif;
+            line-height: 1.15;
+        }
+
+        .hero h1 {
+            margin-bottom: 20px;
+            font-size: clamp(44px, 6vw, 76px);
+            letter-spacing: -.04em;
+        }
+
+        .hero-text {
+            max-width: 570px;
+            margin-bottom: 25px;
+            color: #e8e6dc;
+            font-size: 17px;
+        }
+
+        .button {
+            display: inline-flex;
+            min-height: 46px;
+            align-items: center;
+            justify-content: center;
+            padding: 11px 20px;
+            border: 0;
+            border-radius: 5px;
+            background: var(--red);
+            color: #fff;
+            font-weight: 700;
+            transition: .2s;
+        }
+
+            .button:hover {
+                transform: translateY(-2px);
+                background: var(--red-dark);
+                box-shadow: 0 8px 20px rgba(0,0,0,.16);
+            }
+
+        .button-gold {
+            background: var(--gold);
+            color: var(--ink);
+        }
+
+            .button-gold:hover {
+                background: #e3bd7a;
+            }
+
+        .button-secondary {
+            border: 1px solid var(--line);
+            background: transparent;
+            color: var(--red);
+        }
+
+            .button-secondary:hover {
+                background: var(--red);
+                color: white;
+            }
+
+        .vinyl {
+            position: relative;
+            display: grid;
+            width: 270px;
+            height: 270px;
+            flex: 0 0 270px;
+            place-items: center;
+            border: 8px solid #292826;
+            border-radius: 50%;
+            background: repeating-radial-gradient( circle, #171716 0 3px, #2b2a27 4px 6px, #171716 7px 9px );
+            box-shadow: 0 25px 45px rgba(0,0,0,.3);
+        }
+
+        .vinyl-label {
+            display: grid;
+            width: 95px;
+            height: 95px;
+            place-items: center;
+            border: 5px solid #e9c87f;
+            border-radius: 50%;
+            background: var(--red);
+            color: #fff7df;
+            font-size: 40px;
+        }
+
+        .vinyl-hole {
+            position: absolute;
+            z-index: 2;
+            width: 18px;
+            height: 18px;
+            border: 4px solid #2b2a27;
+            border-radius: 50%;
+            background: var(--bg);
+        }
+
+        .wrap {
+            width: min(1160px, 100%);
+            margin: 0 auto;
+            padding: 65px 24px;
+        }
+
+        .section-head {
+            display: flex;
+            align-items: end;
+            justify-content: space-between;
+            gap: 20px;
+            margin-bottom: 25px;
+        }
+
+            .section-head h2 {
+                margin: 0;
+                font-size: clamp(29px, 4vw, 39px);
+            }
+
+            .section-head p {
+                margin: 0;
+                color: var(--muted);
+            }
+
+        .category-grid {
+            display: grid;
+            grid-template-columns: repeat(5, minmax(0, 1fr));
+            gap: 15px;
+        }
+
+        .category-card {
+            min-height: 185px;
+            padding: 21px;
+            border: 1px solid var(--line);
+            border-radius: 6px;
+            background: var(--card);
+            box-shadow: 0 5px 18px rgba(48,38,26,.035);
+            transition: .2s;
+        }
+
+            .category-card:hover {
+                transform: translateY(-4px);
+                box-shadow: var(--shadow);
+            }
+
+        .category-number {
+            color: var(--gold);
+            font-weight: 800;
+            letter-spacing: .08em;
+        }
+
+        .category-card h3 {
+            margin: 19px 0 8px;
+            font-size: 18px;
+        }
+
+        .category-card p {
+            margin: 0;
+            color: var(--muted);
+            font-size: 13px;
+        }
+
+        .how-band {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 28px;
+            padding: 38px max(9vw, 25px);
+            background: #ece3d3;
+        }
+
+            .how-band h2 {
+                margin: 0;
+                font-size: 32px;
+            }
+
+            .how-band p {
+                max-width: 490px;
+                margin: 0;
+                color: var(--muted);
+            }
+
+        .page {
+            width: min(1160px, 100%);
+            margin: 0 auto;
+            padding: 65px 24px;
+        }
+
+        .page-title {
+            margin: 0 0 10px;
+            font-size: clamp(38px, 5vw, 54px);
+        }
+
+        .page-intro {
+            max-width: 700px;
+            margin: 0 0 28px;
+            color: var(--muted);
+        }
+
+        .vote-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 17px;
+            margin: 30px 0;
+        }
+
+        .card {
+            padding: 24px;
+            border: 1px solid var(--line);
+            border-radius: 6px;
+            background: var(--card);
+            box-shadow: 0 7px 24px rgba(48,38,26,.045);
+        }
+
+            .card h2 {
+                margin-bottom: 9px;
+                font-size: 24px;
+            }
+
+        .hint, .muted {
+            color: var(--muted);
+        }
+
+        .song-option {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 12px 0;
+            border-top: 1px solid var(--line);
+            cursor: pointer;
+        }
+
+            .song-option input {
+                width: 17px;
+                height: 17px;
+                flex: 0 0 17px;
+                margin: 4px 0 0;
+                accent-color: var(--red);
+            }
+
+            .song-option strong {
+                display: block;
+                font-size: 14px;
+            }
+
+            .song-option small {
+                display: block;
+                color: var(--muted);
+            }
+
+        .form-card {
+            margin: 25px 0;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 16px;
+        }
+
+        .field {
+            display: block;
+            color: var(--muted);
+            font-size: 13px;
+            font-weight: 650;
+        }
+
+            .field input, .field select {
+                display: block;
+                width: 100%;
+                min-height: 45px;
+                margin-top: 7px;
+                padding: 10px 12px;
+                border: 1px solid #d8cebe;
+                border-radius: 4px;
+                outline: none;
+                background: white;
+                color: var(--ink);
+            }
+
+                .field input:focus, .field select:focus {
+                    border-color: var(--gold);
+                    box-shadow: 0 0 0 3px rgba(212,173,105,.18);
+                }
+
+        .full {
+            grid-column: 1 / -1;
+        }
+
+        .consent {
+            display: flex;
+            align-items: flex-start;
+            gap: 9px;
+            margin: 18px 0;
+            color: var(--muted);
+            font-size: 13px;
+        }
+
+            .consent input {
+                margin-top: 4px;
+                accent-color: var(--red);
+            }
+
+        .message {
+            min-height: 22px;
+            margin: 12px 0 0;
+            color: var(--green);
+            font-size: 14px;
+            font-weight: 650;
+        }
+
+        .chart-section {
+            margin: 18px 0;
+        }
+
+        .chart-row {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 13px 0;
+            border-top: 1px solid var(--line);
+        }
+
+        .rank {
+            width: 35px;
+            color: var(--red);
+            font-family: Georgia, serif;
+            font-size: 23px;
+            font-weight: 700;
+        }
+
+        .chart-song {
+            flex: 1;
+        }
+
+            .chart-song small {
+                display: block;
+                color: var(--muted);
+            }
+
+        .vote-count {
+            color: var(--muted);
+            font-size: 13px;
+            white-space: nowrap;
+        }
+
+        .two-columns {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 18px;
+        }
+
+        .admin-list {
+            margin-top: 15px;
+            border-top: 1px solid var(--line);
+        }
+
+        .admin-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 15px;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--line);
+        }
+
+            .admin-row small {
+                display: block;
+                color: var(--muted);
+            }
+
+        .delete-btn {
+            padding: 7px 11px;
+            border: 1px solid #dfbdb5;
+            border-radius: 4px;
+            background: transparent;
+            color: var(--red);
+        }
+
+            .delete-btn:hover {
+                background: #f8e9e5;
+            }
+
+        .winner {
+            padding: 12px 0;
+            border-top: 1px solid var(--line);
+        }
+
+            .winner strong {
+                display: block;
+            }
+
+            .winner small {
+                color: var(--muted);
+            }
+
+        .icon-circle {
+            display: grid;
+            width: 42px;
+            height: 42px;
+            margin-bottom: 13px;
+            place-items: center;
+            border-radius: 50%;
+            background: #f2e6c9;
+            color: var(--red);
+            font-size: 22px;
+        }
+
+        .footer {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+            padding: 22px max(5vw, 22px);
+            border-top: 1px solid var(--line);
+            background: var(--card);
+            color: var(--muted);
+            font-size: 13px;
+        }
+
+        .notice {
+            margin-top: 20px;
+            color: var(--muted);
+            font-size: 13px;
+        }
+
+        @media (max-width: 900px) {
+            .category-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .hero {
+                padding-right: 6vw;
+                padding-left: 6vw;
+            }
+
+            .vinyl {
+                width: 220px;
+                height: 220px;
+                flex-basis: 220px;
+            }
+        }
+
+        @media (max-width: 650px) {
+            .header {
+                position: static;
+                align-items: flex-start;
+                flex-direction: column;
+                gap: 9px;
+            }
+
+            .nav {
+                gap: 2px;
+            }
+
+                .nav a {
+                    padding: 7px 9px;
+                    font-size: 13px;
+                }
+
+            .hero {
+                min-height: 400px;
+                padding: 48px 23px;
+            }
+
+                .hero h1 {
+                    font-size: 46px;
+                }
+
+            .vinyl {
+                display: none;
+            }
+
+            .wrap, .page {
+                padding: 46px 19px;
+            }
+
+            .section-head {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            .category-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .vote-grid, .form-grid, .two-columns {
+                grid-template-columns: 1fr;
+            }
+
+            .full {
+                grid-column: auto;
+            }
+
+            .how-band {
+                align-items: flex-start;
+                flex-direction: column;
+                padding: 30px 23px;
+            }
+
+            .footer {
+                flex-direction: column;
+                gap: 5px;
+            }
+        }
+
+        @media (max-width: 390px) {
+            .category-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .hero h1 {
+                font-size: 39px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header class="header">
+        <a class="logo" href="#home">
+            <span class="logo-icon">♫</span>
+            <span>Ретро-шлягер</span>
+        </a>
+
+        <nav class="nav">
+            <a href="#home">Главная</a>
+            <a href="#vote">Голосование</a>
+            <a href="#chart">Хит-парад</a>
+            <a href="#prizes">Призы</a>
+            <a href="#admin">Сотрудникам</a>
+        </nav>
+    </header>
+
+    <main>
+        <section class="hero" id="home">
+            <div class="hero-copy">
+                <p class="eyebrow">Радио, которое выбираете вы</p>
+                <h1>Любимые песни<br>возвращаются в эфир</h1>
+                <p class="hero-text">
+                    Выберите песни в пяти номинациях, отправьте заявку
+                    и помогите составить концерт по заявкам слушателей.
+                </p>
+                <a class="button button-gold" href="#vote">Составить хит-парад</a>
+            </div>
+
+            <div class="vinyl" aria-hidden="true">
+                <div class="vinyl-label">♫</div>
+                <div class="vinyl-hole"></div>
+            </div>
+        </section>
+
+        <section class="wrap">
+            <div class="section-head">
+                <div>
+                    <p class="eyebrow">Каждый день в эфире</p>
+                    <h2>Пять номинаций. Пять песен.</h2>
+                </div>
+                <a class="button button-secondary" href="#chart">Открыть хит-парад →</a>
+            </div>
+
+            <div class="category-grid" id="category-cards"></div>
+        </section>
+
+        <section class="how-band">
+            <div>
+                <p class="eyebrow">Как это работает</p>
+                <h2>Ваш голос — часть концерта</h2>
+            </div>
+            <p>
+                Выберите по одному произведению в каждой номинации и оставьте
+                контактные данные. Рейтинг формируется по голосам слушателей.
+            </p>
+            <a class="button" href="#vote">Проголосовать</a>
+        </section>
+
+        <section class="page" id="vote">
+            <p class="eyebrow">Концерт по заявкам</p>
+            <h1 class="page-title">Составьте свой хит-парад</h1>
+            <p class="page-intro">
+                Выберите одно произведение в каждой номинации и укажите,
+                как с вами связаться.
+            </p>
+
+            <form id="vote-form">
+                <div class="vote-grid" id="vote-list"></div>
+
+                <div class="card form-card">
+                    <h2>Ваши координаты</h2>
+
+                    <div class="form-grid">
+                        <label class="field">
+                            Фамилия
+                            <input name="surname" required maxlength="60" autocomplete="family-name">
+                        </label>
+
+                        <label class="field">
+                            Имя
+                            <input name="firstName" required maxlength="60" autocomplete="given-name">
+                        </label>
+
+                        <label class="field full">
+                            Номер телефона
+                            <input name="phone" type="tel" required maxlength="25"
+                                   placeholder="+7 (___) ___-__-__" autocomplete="tel">
+                        </label>
+                    </div>
+
+                    <label class="consent">
+                        <input type="checkbox" required>
+                        <span>Согласен(на) на обработку данных для участия в голосовании.</span>
+                    </label>
+
+                    <button class="button" type="submit">Отправить заявку</button>
+                    <p class="message" id="vote-message" aria-live="polite"></p>
+                </div>
+            </form>
+        </section>
+
+        <section class="page" id="chart">
+            <p class="eyebrow">Результаты голосования</p>
+            <h1 class="page-title">Хит-парад радиостанции</h1>
+            <p class="page-intro">
+                Список произведений каждой номинации отсортирован по числу голосов.
+            </p>
+            <div id="chart-list"></div>
+        </section>
+
+        <section class="page" id="prizes">
+            <p class="eyebrow">Ежемесячный розыгрыш</p>
+            <h1 class="page-title">Призы для слушателей</h1>
+            <p class="page-intro">
+                В ТЗ предусмотрены призы для активных слушателей и участников,
+                чей хит-парад совпал с хит-парадом радиостанции.
+            </p>
+
+            <div class="two-columns">
+                <div class="card">
+                    <div class="icon-circle">★</div>
+                    <h2>Активные слушатели</h2>
+                    <p class="muted">Участники с наибольшим числом заявок.</p>
+                    <div id="active-winners"></div>
+                </div>
+
+                <div class="card">
+                    <div class="icon-circle">♫</div>
+                    <h2>Совпадение с эфиром</h2>
+                    <p class="muted">Хит-парады, совпавшие с текущими лидерами.</p>
+                    <div id="match-winners"></div>
+                </div>
+            </div>
+
+            <p class="notice">
+                Демонстрационная версия хранит данные только в браузере на этом компьютере.
+            </p>
+        </section>
+
+        <section class="page" id="admin">
+            <p class="eyebrow">Панель сотрудника · демонстрационный режим</p>
+            <h1 class="page-title">Управление каталогом</h1>
+            <p class="page-intro">
+                Добавляйте и удаляйте песни в списке голосования.
+                Изменения сохраняются в этом браузере.
+            </p>
+
+            <div class="card form-card">
+                <h2>Добавить произведение</h2>
+                <form id="add-song-form" class="form-grid">
+                    <label class="field">
+                        Номинация
+                        <select name="category" id="song-category"></select>
+                    </label>
+
+                    <label class="field">
+                        Исполнитель
+                        <input name="artist" required maxlength="80" placeholder="Имя исполнителя">
+                    </label>
+
+                    <label class="field full">
+                        Название произведения
+                        <input name="title" required maxlength="100" placeholder="Название песни">
+                    </label>
+
+                    <div class="full">
+                        <button class="button" type="submit">Добавить песню</button>
+                    </div>
+                </form>
+                <p class="message" id="admin-message" aria-live="polite"></p>
+            </div>
+
+            <div class="card">
+                <div class="section-head">
+                    <h2>Музыкальный каталог</h2>
+                    <span class="muted" id="song-total"></span>
+                </div>
+                <div class="admin-list" id="admin-list"></div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <span><strong>♫ Ретро-шлягер</strong></span>
+        <span>Музыка, которую выбирают вместе</span>
+    </footer>
+
+    <script>
+        const STORAGE_KEY = "retro_shlyager_site_v2";
+
+        const initialCategories = [
+            "Лучший исполнитель",
+            "Лучшая группа",
+            "Мэтры",
+            "Классика",
+            "День Победы"
+        ];
+
+        const descriptions = [
+            "Сольные голоса, которые помнят поколения.",
+            "Коллективы и ансамбли, любимые слушателями.",
+            "Легенды отечественной эстрады.",
+            "Песни, ставшие частью музыкальной истории.",
+            "Музыка памяти и благодарности."
+        ];
+
+        const initialSongs = [
+            { id: 1, category: "Лучший исполнитель", artist: "Муслим Магомаев", title: "Синяя вечность" },
+            { id: 2, category: "Лучший исполнитель", artist: "Алла Пугачёва", title: "Миллион алых роз" },
+            { id: 3, category: "Лучший исполнитель", artist: "Эдуард Хиль", title: "Зима" },
+            { id: 4, category: "Лучший исполнитель", artist: "Майя Кристалинская", title: "Нежность" },
+            { id: 5, category: "Лучший исполнитель", artist: "Юрий Антонов", title: "Крыша дома твоего" },
+            { id: 6, category: "Лучший исполнитель", artist: "Валентина Толкунова", title: "Стою на полустаночке" },
+            { id: 7, category: "Лучший исполнитель", artist: "Иосиф Кобзон", title: "Поклонимся великим тем годам" },
+
+            { id: 8, category: "Лучшая группа", artist: "Самоцветы", title: "Мой адрес — Советский Союз" },
+            { id: 9, category: "Лучшая группа", artist: "Поющие гитары", title: "Синий иней" },
+            { id: 10, category: "Лучшая группа", artist: "Песняры", title: "Вологда" },
+            { id: 11, category: "Лучшая группа", artist: "Весёлые ребята", title: "Люди встречаются" },
+            { id: 12, category: "Лучшая группа", artist: "Земляне", title: "Трава у дома" },
+            { id: 13, category: "Лучшая группа", artist: "Синяя птица", title: "Клён" },
+            { id: 14, category: "Лучшая группа", artist: "Цветы", title: "Звёздочка моя ясная" },
+
+            { id: 15, category: "Мэтры", artist: "Марк Бернес", title: "Я люблю тебя, жизнь" },
+            { id: 16, category: "Мэтры", artist: "Клавдия Шульженко", title: "Синий платочек" },
+            { id: 17, category: "Мэтры", artist: "Леонид Утёсов", title: "У Чёрного моря" },
+            { id: 18, category: "Мэтры", artist: "Лидия Русланова", title: "Валенки" },
+            { id: 19, category: "Мэтры", artist: "Вадим Козин", title: "Осень" },
+            { id: 20, category: "Мэтры", artist: "Изабелла Юрьева", title: "Белая ночь" },
+            { id: 21, category: "Мэтры", artist: "Пётр Лещенко", title: "У самовара" },
+
+            { id: 22, category: "Классика", artist: "Муслим Магомаев", title: "Лучший город Земли" },
+            { id: 23, category: "Классика", artist: "Майя Кристалинская", title: "А годы летят" },
+            { id: 24, category: "Классика", artist: "Эдуард Хиль", title: "С чего начинается Родина" },
+            { id: 25, category: "Классика", artist: "Анна Герман", title: "Надежда" },
+            { id: 26, category: "Классика", artist: "Юрий Гуляев", title: "Русское поле" },
+            { id: 27, category: "Классика", artist: "Людмила Зыкина", title: "Течёт река Волга" },
+            { id: 28, category: "Классика", artist: "Валентина Толкунова", title: "Поговори со мною, мама" },
+
+            { id: 29, category: "День Победы", artist: "Лев Лещенко", title: "День Победы" },
+            { id: 30, category: "День Победы", artist: "Марк Бернес", title: "Журавли" },
+            { id: 31, category: "День Победы", artist: "Клавдия Шульженко", title: "Давай закурим" },
+            { id: 32, category: "День Победы", artist: "Владимир Трошин", title: "Майский вальс" },
+            { id: 33, category: "День Победы", artist: "Иосиф Кобзон", title: "Поклонимся великим тем годам" },
+            { id: 34, category: "День Победы", artist: "Ансамбль им. Александрова", title: "Священная война" },
+            { id: 35, category: "День Победы", artist: "Эдита Пьеха", title: "На безымянной высоте" }
+        ];
+
+        function loadData() {
+            try {
+                const saved = localStorage.getItem(STORAGE_KEY);
+                if (saved) {
+                    const parsed = JSON.parse(saved);
+                    if (parsed.categories && parsed.songs && parsed.votes) return parsed;
+                }
+            } catch (error) {}
+            return {
+                categories: initialCategories.slice(),
+                songs: initialSongs.map(song => ({ ...song })),
+                votes: []
+            };
+        }
+
+        let data = loadData();
+
+        function saveData() {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+        }
+
+        function safeText(value) {
+            return String(value).replace(/[&<>"']/g, character => ({
+                "&": "&amp;",
+                "<": "&lt;",
+                ">": "&gt;",
+                '"': "&quot;",
+                "'": "&#039;"
+            }[character]));
+        }
+
+        function songVotes(songId) {
+            return data.votes.reduce((sum, vote) =>
+                sum + (Object.values(vote.picks).includes(Number(songId)) ? 1 : 0), 0);
+        }
+
+        function sortedSongs(category) {
+            return data.songs
+                .filter(song => song.category === category)
+                .sort((a, b) => songVotes(b.id) - songVotes(a.id) || a.id - b.id);
+        }
+
+        function leaders() {
+            const result = {};
+            data.categories.forEach(category => {
+                result[category] = sortedSongs(category)[0] || null;
+            });
+            return result;
+        }
+
+        function renderCategories() {
+            const target = document.getElementById("category-cards");
+            target.innerHTML = data.categories.map((category, index) => `
+                <article class="category-card">
+                    <span class="category-number">0${index + 1}</span>
+                    <h3>${safeText(category)}</h3>
+                    <p>${descriptions[index] || "Выберите любимое произведение этой номинации."}</p>
+                </article>
+            `).join("");
+        }
+
+        function renderVote() {
+            const target = document.getElementById("vote-list");
+
+            target.innerHTML = data.categories.map((category, index) => {
+                const songs = sortedSongs(category).slice(0, 7);
+
+                const options = songs.length
+                    ? songs.map(song => `
+                        <label class="song-option">
+                            <input type="radio" name="pick-${index}" value="${song.id}" required>
+                            <span>
+                                <strong>${safeText(song.title)}</strong>
+                                <small>${safeText(song.artist)}</small>
+                            </span>
+                        </label>
+                    `).join("")
+                    : `<p class="muted">В этой номинации пока нет произведений.</p>`;
+
+                return `
+                    <section class="card">
+                        <p class="eyebrow">Номинация 0${index + 1}</p>
+                        <h2>${safeText(category)}</h2>
+                        <p class="hint">Выберите одну песню</p>
+                        ${options}
+                    </section>
+                `;
+            }).join("");
+        }
+
+        function renderChart() {
+            const target = document.getElementById("chart-list");
+
+            target.innerHTML = data.categories.map((category, index) => {
+                const songs = sortedSongs(category).slice(0, 7);
+
+                const rows = songs.length
+                    ? songs.map((song, songIndex) => `
+                        <div class="chart-row">
+                            <span class="rank">${songIndex + 1}</span>
+                            <div class="chart-song">
+                                <strong>${safeText(song.title)}</strong>
+                                <small>${safeText(song.artist)}</small>
+                            </div>
+                            <span class="vote-count">${songVotes(song.id)} голос(ов)</span>
+                        </div>
+                    `).join("")
+                    : `<p class="muted">В этой номинации пока нет песен.</p>`;
+
+                return `
+                    <section class="card chart-section">
+                        <p class="eyebrow">Номинация 0${index + 1}</p>
+                        <h2>${safeText(category)}</h2>
+                        ${rows}
+                    </section>
+                `;
+            }).join("");
+        }
+
+        function renderAdmin() {
+            const select = document.getElementById("song-category");
+            const list = document.getElementById("admin-list");
+
+            select.innerHTML = data.categories.map(category =>
+                `<option value="${safeText(category)}">${safeText(category)}</option>`
+            ).join("");
+
+            document.getElementById("song-total").textContent =
+                `${data.songs.length} произведений`;
+
+            list.innerHTML = data.songs.map(song => `
+                <div class="admin-row">
+                    <div>
+                        <strong>${safeText(song.title)}</strong>
+                        <small>${safeText(song.artist)} · ${safeText(song.category)}</small>
+                    </div>
+                    <button class="delete-btn" type="button" data-delete="${song.id}">Удалить</button>
+                </div>
+            `).join("");
+
+            list.querySelectorAll("[data-delete]").forEach(button => {
+                button.addEventListener("click", () => {
+                    const id = Number(button.dataset.delete);
+                    data.songs = data.songs.filter(song => song.id !== id);
+                    saveData();
+                    refresh();
+                });
+            });
+        }
+
+        function renderPrizes() {
+            const activeTarget = document.getElementById("active-winners");
+            const matchTarget = document.getElementById("match-winners");
+
+            const participants = {};
+
+            data.votes.forEach(vote => {
+                const key = `${vote.phone}|${vote.surname}|${vote.firstName}`;
+                if (!participants[key]) participants[key] = { vote, count: 0 };
+                participants[key].count++;
+            });
+
+            const active = Object.values(participants)
+                .sort((a, b) => b.count - a.count)
+                .slice(0, 5);
+
+            activeTarget.innerHTML = active.length
+                ? active.map(item => `
+                    <div class="winner">
+                        <strong>${safeText(item.vote.firstName)} ${safeText(item.vote.surname)}</strong>
+                        <small>Заявок: ${item.count}</small>
+                    </div>
+                `).join("")
+                : `<p class="muted">Пока нет заявок. Список появится после голосования.</p>`;
+
+            const currentLeaders = leaders();
+            const matchingVotes = data.votes.filter(vote =>
+                data.categories.every((category, index) =>
+                    currentLeaders[category] &&
+                    Number(vote.picks[index]) === Number(currentLeaders[category].id)
+                )
+            );
+
+            const unique = {};
+            matchingVotes.forEach(vote => {
+                unique[`${vote.phone}|${vote.surname}|${vote.firstName}`] = vote;
+            });
+
+            const matches = Object.values(unique);
+
+            matchTarget.innerHTML = matches.length
+                ? matches.map(vote => `
+                    <div class="winner">
+                        <strong>${safeText(vote.firstName)} ${safeText(vote.surname)}</strong>
+                        <small>Хит-парад совпал с текущими лидерами</small>
+                    </div>
+                `).join("")
+                : `<p class="muted">Совпадений пока нет.</p>`;
+        }
+
+        function refresh() {
+            renderCategories();
+            renderVote();
+            renderChart();
+            renderAdmin();
+            renderPrizes();
+        }
+
+        document.getElementById("vote-form").addEventListener("submit", event => {
+            event.preventDefault();
+
+            const form = event.currentTarget;
+            const formData = new FormData(form);
+            const picks = {};
+
+            for (let index = 0; index < data.categories.length; index++) {
+                const selected = formData.get(`pick-${index}`);
+                if (!selected) {
+                    document.getElementById("vote-message").textContent =
+                        "Выберите по одной песне в каждой номинации.";
+                    return;
+                }
+                picks[index] = Number(selected);
+            }
+
+            data.votes.push({
+                surname: String(formData.get("surname")).trim(),
+                firstName: String(formData.get("firstName")).trim(),
+                phone: String(formData.get("phone")).trim(),
+                picks
+            });
+
+            saveData();
+            form.reset();
+            document.getElementById("vote-message").textContent =
+                "Заявка принята. Спасибо за ваш голос!";
+            refresh();
+        });
+
+        document.getElementById("add-song-form").addEventListener("submit", event => {
+            event.preventDefault();
+
+            const form = event.currentTarget;
+            const formData = new FormData(form);
+            const newId = data.songs.reduce((max, song) => Math.max(max, song.id), 0) + 1;
+
+            data.songs.push({
+                id: newId,
+                category: String(formData.get("category")),
+                artist: String(formData.get("artist")).trim(),
+                title: String(formData.get("title")).trim()
+            });
+
+            saveData();
+            form.reset();
+            document.getElementById("admin-message").textContent = "Песня добавлена в каталог.";
+            refresh();
+        });
+
+        refresh();
+    </script>
+</body>
+</html>
